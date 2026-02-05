@@ -1,14 +1,37 @@
 header, footer{
-    height: 10rem;
-    width: 20rem;
-    background-color: black;
+    height: 12.5rem;
+    width: 27.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
+header{
+    display: flex;
+    margin-top: 3rem;
+}
+
+footer{
+    display: flex;
+    margin-top: auto;
+}
+
+img{
+    height: 20rem;
+    transition: transform 0.6s ease;
+    transform: scale(1);
+    will-change: transform;
+}
+
+img:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
 .container{
-    height: 2rem;
+    background-color: white;
+    height: 40rem;
+    width: 35rem;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -16,8 +39,8 @@ header, footer{
 }
 
 .home{
-    height: 100%;
-    width: 100%;
+    min-height: 100vh;
+    width: 100vw;
     display: flex;
     flex-direction: column;
     align-items: center;

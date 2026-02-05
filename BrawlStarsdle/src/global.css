@@ -10,3 +10,16 @@ body{
     background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('./assets/bswallpaper01.webp') center center / cover no-repeat;
     font-family: var(--fonte-1);
 }
+
+.material-icons{
+    color: var(--cor-branca);
+    cursor: pointer;
+    font-size: 3rem;
+    transition: transform 0.6s ease;
+    transform: rotate(0deg);
+    will-change: transform;
+}
+
+.material-icons:hover{
+    transform: rotate(45deg);
+}
