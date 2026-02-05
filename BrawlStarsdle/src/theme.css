@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Lilita+One&display=swap');
+
+:root{
+    --cor-1: #FEBE20;
+    --cor-2: #FEE25B;
+    --cor-3: #EF7627;
+    --cor-4: #2E36F3;
+    --cor-5: #3A42F4;
+
+    --cor-negra: #000;
+    --cor-branca: #fff;
+
+    --fonte-1: "Lilita One", sans-serif;
+    --fonte-2: "Roboto", sans-serif;
+}
