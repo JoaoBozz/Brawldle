@@ -3,3 +3,10 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+body{
+    min-height: 100vh;
+    width: 100vw;
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('./assets/bswallpaper01.webp') center center / cover no-repeat;
+    font-family: var(--fonte-1);
+}
