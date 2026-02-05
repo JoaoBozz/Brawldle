@@ -8,8 +8,12 @@ function Home() {
                 <img src="/src/assets/logoBrawldle.png" alt="Logo Brawldle"/>
                 <span class="material-icons">language</span>
             </header>
+            <p>Adivinhe os Brawlers de Brawl Stars</p>
             <div className={style.container}>
-
+                <div className={style.Select}>
+                    <div className={style.bola}></div>
+                    <div className={style.retangulo}></div>
+                </div>
             </div>
             <footer>
 

@@ -23,3 +23,8 @@ body{
 .material-icons:hover{
     transform: rotate(45deg);
 }
+
+p{
+    color: var(--cor-branca);
+    font-size: 1.5rem;
+}
