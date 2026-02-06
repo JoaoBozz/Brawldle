@@ -15,16 +15,31 @@ body{
     color: var(--cor-branca);
     cursor: pointer;
     font-size: 3rem;
-    transition: transform 0.6s ease;
-    transform: rotate(0deg);
-    will-change: transform;
-}
-
-.material-icons:hover{
-    transform: rotate(45deg);
 }
 
 p{
     color: var(--cor-branca);
     font-size: 1.5rem;
+}
+
+footer{
+    display: flex;
+    margin-top: auto;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+    height: 10rem;
+    width: 30rem;
+    display: flex;
+}
+
+footer p{
+    font-size: 1.25rem;
+    text-align: center;
+}
+
+.direitos{
+    font-size: 1rem;
+    color: var(--cor-2);
 }
