@@ -4,42 +4,65 @@
     box-sizing: border-box;
 }
 
-body{
+body {
     min-height: 100vh;
     width: 100vw;
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('./assets/bswallpaper01.webp') center center / cover no-repeat;
+    background: 
+        linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+        url('./assets/bswallpaper01.webp') center center / cover no-repeat;
+    background-attachment: fixed;
     font-family: var(--fonte-1);
 }
 
-.material-icons{
+header {
+    height: 10rem;
+    width: 30rem;
+    margin: 1rem auto;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+footer {
+    width: 30rem;
+    margin: 2rem auto 1rem auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+footer p {
+    font-size: 1.25rem;
+    text-align: center;
+}
+
+.direitos {
+    font-size: 1rem;
+    color: var(--cor-2);
+}
+
+p {
+    color: var(--cor-branca);
+    font-size: 1.5rem;
+}
+
+.material-icons {
     color: var(--cor-branca);
     cursor: pointer;
     font-size: 3rem;
 }
 
-p{
-    color: var(--cor-branca);
-    font-size: 1.5rem;
-}
-
-footer{
+.app-layout {
+    min-height: 100vh;
     display: flex;
-    margin-top: auto;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 0.75rem;
-    height: 10rem;
-    width: 30rem;
+}
+
+.page-content {
+    flex: 1;
     display: flex;
-}
-
-footer p{
-    font-size: 1.25rem;
-    text-align: center;
-}
-
-.direitos{
-    font-size: 1rem;
-    color: var(--cor-2);
+    justify-content: center;
 }
