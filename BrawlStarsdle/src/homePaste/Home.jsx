@@ -5,7 +5,7 @@ function Home() {
     const navigate = useNavigate();
 
     return (
-        <div className={style.home}>
+        <div className={`page-container ${style.home}`}>
             <p>Adivinhe os Brawlers de Brawl Stars</p>
 
             <div className={style.container}>
