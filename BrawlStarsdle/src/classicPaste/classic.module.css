@@ -1,3 +1,9 @@
+.container i{
+    color: var(--cor-branca);
+    cursor: pointer;
+    font-size: 3rem;
+}
+
 .container{
     width: 100vw;
 
@@ -33,14 +39,16 @@
 }
 
 .block{
+    color: var(--cor-branca);
     width: 5rem;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 1rem;
-    background-color: white;
     border-radius: 0.5rem;
+    position: relative;
+    overflow: hidden;
 }
 
 .htrue{
@@ -148,4 +156,32 @@
 
 .textblockguia{
     text-align: center;
+}
+
+.arrow{
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 4rem;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.textValue{
+    position: relative;
+    z-index: 2;
+}
+
+.guia i{
+    color: rgb(139, 10, 10);
+    font-size: 3rem;
+}
+
+.content i{
+    color: rgb(139, 10, 10);
+    font-size: 7rem;
 }

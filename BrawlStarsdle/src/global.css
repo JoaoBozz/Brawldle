@@ -60,12 +60,6 @@ p {
     color: var(--cor-2);
 }
 
-.material-icons {
-    color: var(--cor-branca);
-    cursor: pointer;
-    font-size: 3rem;
-}
-
 .app-layout {
     min-height: 100vh;
     display: flex;
@@ -108,3 +102,4 @@ p {
     background-color: rgb(245, 68, 68);
     filter: brightness(0.8);
 }
+
