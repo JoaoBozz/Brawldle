@@ -82,17 +82,5 @@
 
 .retangulo h1{
     font-size: 2rem;
-    color: var(--cor-4);
-}
-
-.iconequeroda{
-    color: var(--cor-branca);
-    cursor: pointer;
-    font-size: 3rem;
-    transition: 0.5s;
-}
-
-.iconequeroda:hover{
-    transform: rotate(45deg);
-    scale: 1.2;
+    color: var(--cor-negra);
 }

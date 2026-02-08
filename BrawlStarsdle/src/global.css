@@ -83,3 +83,28 @@ p {
     max-width: 30rem;
     margin: 0 auto;
 }
+
+.iconequeroda{
+    color: var(--cor-branca);
+    cursor: pointer;
+    font-size: 3rem;
+    transition: 0.5s;
+}
+
+.iconequeroda:hover{
+    transform: rotate(45deg);
+    scale: 1.2;
+}
+
+.verde{
+    background-color: rgb(48, 189, 48);
+}
+
+.vermelho{
+    background-color: rgb(245, 68, 68);
+}
+
+.vermelhoescuro{
+    background-color: rgb(245, 68, 68);
+    filter: brightness(0.8);
+}

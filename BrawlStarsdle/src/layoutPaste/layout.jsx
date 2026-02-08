@@ -6,7 +6,7 @@ function Layout() {
     return (
         <div className="app-layout">
             <header>
-                <span className="material-icons">settings</span>
+                <span className="material-icons iconequeroda">settings</span>
 
                 <img
                     src="/src/assets/logoBrawldle.png"
@@ -14,7 +14,7 @@ function Layout() {
                     onClick={() => navigate("/")}
                 />
 
-                <span className="material-icons">language</span>
+                <span className="material-icons iconequeroda">language</span>
             </header>
 
             <main className="page-content">
