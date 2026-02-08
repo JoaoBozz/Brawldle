@@ -49,6 +49,8 @@
     border-radius: 0.5rem;
     position: relative;
     overflow: hidden;
+    animation: fadeInBlock 0.5s ease forwards;
+    opacity: 0;
 }
 
 .htrue{
@@ -184,4 +186,15 @@
 .content i{
     color: rgb(139, 10, 10);
     font-size: 7rem;
+}
+
+@keyframes fadeInBlock {
+    from {
+        opacity: 0;
+        transform: translateY(1rem);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

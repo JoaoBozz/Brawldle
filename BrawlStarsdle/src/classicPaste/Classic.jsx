@@ -103,19 +103,19 @@ function Classic() {
             {brawlerSecreto && tentativas.map((b, index) => (
                 <div className={style.row} key={index}>
 
-                    <div className={`${style.block} ${comparar(b.nome, brawlerSecreto.nome)}`}>
+                    <div className={`${style.block} delay0 ${comparar(b.nome, brawlerSecreto.nome)}`}>
                         {toTitleCase(b.nome)}
                     </div>
 
-                    <div className={`${style.block} ${comparar(b.raridade, brawlerSecreto.raridade)}`}>
+                    <div className={`${style.block} delay1 ${comparar(b.raridade, brawlerSecreto.raridade)}`}>
                         {toTitleCase(b.raridade)}
                     </div>
 
-                    <div className={`${style.block} ${comparar(b.classe, brawlerSecreto.classe)}`}>
+                    <div className={`${style.block} delay2 ${comparar(b.classe, brawlerSecreto.classe)}`}>
                         {toTitleCase(b.classe)}
                     </div>
 
-                    <div className={`${style.block} ${
+                    <div className={`${style.block} delay3 ${
                         comparar(b.vida, brawlerSecreto.vida) === "verde"
                             ? "verde"
                             : "vermelhoescuro"
@@ -135,11 +135,11 @@ function Classic() {
 
 
 
-                    <div className={`${style.block} ${comparar(b.alcance, brawlerSecreto.alcance)}`}>
+                    <div className={`${style.block} delay4 ${comparar(b.alcance, brawlerSecreto.alcance)}`}>
                         {toTitleCase(b.alcance)}
                     </div>
 
-                    <div className={`${style.block} ${
+                    <div className={`${style.block} delay5 ${
                         comparar(b.anoLancamento, brawlerSecreto.anoLancamento) === "verde"
                             ? "verde"
                             : "vermelhoescuro"
@@ -158,7 +158,7 @@ function Classic() {
                     </div>
 
 
-                    <div className={`${style.block} ${comparar(b.velocidadeMovimento, brawlerSecreto.velocidadeMovimento)}`}>
+                    <div className={`${style.block} delay6 ${comparar(b.velocidadeMovimento, brawlerSecreto.velocidadeMovimento)}`}>
                         {toTitleCase(b.velocidadeMovimento)}
                     </div>
 
