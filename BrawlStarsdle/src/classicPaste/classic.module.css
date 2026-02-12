@@ -188,6 +188,31 @@
     font-size: 7rem;
 }
 
+.sugestoes {
+    position: absolute;
+    margin-right: 5rem;
+    width: 25rem;
+    border-radius: 1rem;
+    margin-top: 4rem;
+    border: 1px solid var(--cor-1);
+    padding: 0.5rem;
+    background-color: var(--cor-branca);
+    text-indent: 1rem;
+    z-index: 10;
+}
+
+.sugestaoItem {
+    padding: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.sugestaoItem:hover {
+    background-color: var(--cor-1);
+    border-radius: 0.25rem;
+}
+
+
 @keyframes fadeInBlock {
     from {
         opacity: 0;

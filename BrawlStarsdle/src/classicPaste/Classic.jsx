@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 import style from './classic.module.css';
 import { brawlers } from '../brawlers';
@@ -8,12 +8,32 @@ function Classic() {
     const [brawlerSecreto, setbrawlerSecreto] = useState(null)
     const [input, setInput] = useState("");
     const [tentativas, settentativas] = useState([]);
+    const [sugestoes, setSugestoes] = useState([]);
+    const [venceu, setVenceu] = useState(false);
+    const sugestoesRef = useRef(null);
+
 
     useEffect(() => {
         const brawlersvalidos = brawlers.filter(brawler => brawler.vida != null).filter(brawler => brawler.vida < 20000);
         const aleatorio = brawlersvalidos[Math.floor(Math.random() * brawlersvalidos.length)];
         setbrawlerSecreto(aleatorio);
     }, []);
+
+    useEffect(() => {
+        function handleClickFora(event) {
+            if (sugestoesRef.current && !sugestoesRef.current.contains(event.target)) {
+                setSugestoes([]);
+            }
+        }
+
+        if (sugestoes.length > 0) {
+            document.addEventListener('click', handleClickFora);
+        }
+
+        return () => {
+            document.removeEventListener('click', handleClickFora);
+        };
+    }, [sugestoes]);
 
     function confirmar() {
         const chute = brawlers.find(
@@ -62,13 +82,46 @@ function Classic() {
                 type="text"
                 className={style.input}
                 value={input}
-                onChange={(e) => setInput(e.target.value)}
+               onChange={(e) => {
+                    const valor = e.target.value;
+                    setInput(valor);
+
+                    if (valor.trim() === "") {
+                        setSugestoes([]);
+                        return;
+                    }
+
+                    const filtrados = brawlers
+                        .filter(b => 
+                            b.nome.toLowerCase().includes(valor.toLowerCase())
+                        )
+                        .slice(0, 6);
+
+                    setSugestoes(filtrados);
+                }}
                 />
                 <div
                 className={style.confere}
                 onClick={confirmar}
                 ><i className="material-icons">send</i></div>
             </div>
+                {sugestoes.length > 0 && (
+                    <div className={style.sugestoes} ref={sugestoesRef}>
+                        {sugestoes.map((b, i) => (
+                            <div 
+                                key={i}
+                                className={style.sugestaoItem}
+                                onClick={() => {
+                                    settentativas([...tentativas, b]);
+                                    setInput("");
+                                    setSugestoes([]);
+                                }}
+                            >
+                                {toTitleCase(b.nome)}
+                            </div>
+                        ))}
+                    </div>
+                )}
             <div className={style.content}>
                 <div className={`${style.rowcar} ${style.row}`}>
                     <div className={style.htrue}>
