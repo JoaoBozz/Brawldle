@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-
+import confetti from "canvas-confetti";
 import style from './classic.module.css';
 import { brawlers } from '../brawlers';
 
@@ -11,6 +11,9 @@ function Classic() {
     const [sugestoes, setSugestoes] = useState([]);
     const [venceu, setVenceu] = useState(false);
     const sugestoesRef = useRef(null);
+    const vitoriaRef = useRef(null);
+
+    const [textoVitoria, setTextoVitoria] = useState("");
 
 
     useEffect(() => {
@@ -18,6 +21,43 @@ function Classic() {
         const aleatorio = brawlersvalidos[Math.floor(Math.random() * brawlersvalidos.length)];
         setbrawlerSecreto(aleatorio);
     }, []);
+
+    useEffect(() => {
+        if (!brawlerSecreto || tentativas.length === 0) return;
+
+        const ultimaTentativa = tentativas[tentativas.length - 1];
+
+        if (ultimaTentativa.nome === brawlerSecreto.nome) {
+        setVenceu(true);
+        confetti({
+            particleCount: 150,
+            spread: 100,
+            origin: { y: 0.6 }
+        });
+    }
+    }, [tentativas, brawlerSecreto]);
+
+    useEffect(() => {
+        if (venceu && vitoriaRef.current) {
+
+            vitoriaRef.current.scrollIntoView({
+                behavior: "smooth"
+            });
+
+            confetti({
+                particleCount: 250,
+                spread: 160,
+                origin: { y: 0.6 }
+            });
+
+            if (tentativas.length === 1) {
+                setTextoVitoria(`Incrível! Você acertou o brawler de primeira! O brawler secreto era ${toTitleCase(brawlerSecreto.nome)}.`);
+            }
+            else {
+                setTextoVitoria(`Parabéns! Você acertou o brawler em ${tentativas.length} tentativas! O brawler secreto era ${toTitleCase(brawlerSecreto.nome)}.`);
+            }
+        }
+    }, [venceu, tentativas, brawlerSecreto]);
 
     useEffect(() => {
         function handleClickFora(event) {
@@ -73,6 +113,23 @@ function Classic() {
             .join(" ");
     }
 
+    function reiniciarJogo() {
+        const brawlersvalidos = brawlers
+            .filter(brawler => brawler.vida != null)
+            .filter(brawler => brawler.vida < 20000);
+
+        const aleatorio = brawlersvalidos[Math.floor(Math.random() * brawlersvalidos.length)];
+
+        setbrawlerSecreto(aleatorio);
+        settentativas([]);
+        setInput("");
+        setSugestoes([]);
+        setVenceu(false);
+        setTextoVitoria("");
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
 
     return (
         <div className={`page-container ${style.container}`}>
@@ -125,10 +182,6 @@ function Classic() {
             <div className={style.content}>
                 <div className={`${style.rowcar} ${style.row}`}>
                     <div className={style.htrue}>
-                        <div className={style.textblock}>Foto</div>
-                        <div className={style.linha}></div>
-                    </div>
-                    <div className={style.htrue}>
                         <div className={style.textblock}>Raridade</div>
                         <div className={style.linha}></div>
                     </div>
@@ -152,23 +205,23 @@ function Classic() {
                         <div className={style.textblock}>Velocidade</div>
                         <div className={style.linha}></div>
                     </div>
+                    <div className={style.htrue}>
+                        <div className={style.textblock}>Nome</div>
+                        <div className={style.linha}></div>
+                    </div>
                 </div>
             {brawlerSecreto && tentativas.map((b, index) => (
                 <div className={style.row} key={index}>
 
-                    <div className={`${style.block} delay0 ${comparar(b.nome, brawlerSecreto.nome)}`}>
-                        {toTitleCase(b.nome)}
-                    </div>
-
-                    <div className={`${style.block} delay1 ${comparar(b.raridade, brawlerSecreto.raridade)}`}>
+                    <div className={`${style.block} delay0 ${comparar(b.raridade, brawlerSecreto.raridade)}`}>
                         {toTitleCase(b.raridade)}
                     </div>
 
-                    <div className={`${style.block} delay2 ${comparar(b.classe, brawlerSecreto.classe)}`}>
+                    <div className={`${style.block} delay1 ${comparar(b.classe, brawlerSecreto.classe)}`}>
                         {toTitleCase(b.classe)}
                     </div>
 
-                    <div className={`${style.block} delay3 ${
+                    <div className={`${style.block} delay2 ${
                         comparar(b.vida, brawlerSecreto.vida) === "verde"
                             ? "verde"
                             : "vermelhoescuro"
@@ -188,11 +241,11 @@ function Classic() {
 
 
 
-                    <div className={`${style.block} delay4 ${comparar(b.alcance, brawlerSecreto.alcance)}`}>
+                    <div className={`${style.block} delay3 ${comparar(b.alcance, brawlerSecreto.alcance)}`}>
                         {toTitleCase(b.alcance)}
                     </div>
 
-                    <div className={`${style.block} delay5 ${
+                    <div className={`${style.block} delay4 ${
                         comparar(b.anoLancamento, brawlerSecreto.anoLancamento) === "verde"
                             ? "verde"
                             : "vermelhoescuro"
@@ -211,13 +264,27 @@ function Classic() {
                     </div>
 
 
-                    <div className={`${style.block} delay6 ${comparar(b.velocidadeMovimento, brawlerSecreto.velocidadeMovimento)}`}>
+                    <div className={`${style.block} delay5 ${comparar(b.velocidadeMovimento, brawlerSecreto.velocidadeMovimento)}`}>
                         {toTitleCase(b.velocidadeMovimento)}
+                    </div>
+                    
+                    <div className={`${style.block} delay6 ${comparar(b.nome, brawlerSecreto.nome)}`}>
+                        {toTitleCase(b.nome)}
                     </div>
 
                 </div>
             ))}
             </div>
+            {venceu && (
+                <div ref={vitoriaRef} className={style.vitoriaContainer}>
+                    <h1>🎉 VOCÊ VENCEU!</h1>
+                    <p>{textoVitoria}</p>
+
+                    <button onClick={reiniciarJogo}>
+                        Jogar novamente
+                    </button>
+                </div>
+            )}
             <div className={style.guia}>
                 <p>Para começar, digite o nome de um brawler aleátorio no campo acima e confirme.</p>
                 <div className={`${style.linha} ${style.margem}`}></div>
