@@ -1,9 +1,26 @@
 import { useEffect, useState, useRef } from 'react';
 import confetti from "canvas-confetti";
 import style from './classic.module.css';
-import { brawlers } from '../brawlers';
+import { getBrawlers } from '../services/api';
+
+// Converte o objeto que vem da API para o formato que o componente usa.
+// OBS: a API atual não tem "anoLancamento" nem "velocidadeMovimento" —
+// essas colunas foram removidas do jogo até existirem no banco/API.
+function adaptarBrawler(b) {
+    return {
+        nome: b.name,
+        raridade: b.rarity_name,
+        classe: b.category_name,
+        vida: b.health,
+        alcance: b.attack_range,
+    };
+}
 
 function Classic() {
+
+    const [brawlers, setBrawlers] = useState([]);
+    const [carregando, setCarregando] = useState(true);
+    const [erroCarregamento, setErroCarregamento] = useState(null);
 
     const [brawlerSecreto, setbrawlerSecreto] = useState(null)
     const [input, setInput] = useState("");
@@ -15,12 +32,42 @@ function Classic() {
 
     const [textoVitoria, setTextoVitoria] = useState("");
 
-
+    // Busca os brawlers da API assim que o componente monta
     useEffect(() => {
-        const brawlersvalidos = brawlers.filter(brawler => brawler.vida != null).filter(brawler => brawler.vida < 20000);
-        const aleatorio = brawlersvalidos[Math.floor(Math.random() * brawlersvalidos.length)];
-        setbrawlerSecreto(aleatorio);
+        getBrawlers()
+            .then((data) => {
+                console.log("API:", data);
+
+                const adaptados = data.map(adaptarBrawler);
+
+                console.log("Adaptados:", adaptados);
+
+                setBrawlers(adaptados);
+            })
+            .catch((e) => {
+                console.error(e);
+                setErroCarregamento(e.message);
+            })
+            .finally(() => setCarregando(false));
     }, []);
+
+    // Sorteia o brawler secreto assim que a lista chega da API
+    useEffect(() => {
+        if (brawlers.length === 0) return;
+
+        const brawlersvalidos = brawlers
+            .filter(b => b.vida != null)
+            .filter(b => b.vida < 20000);
+
+        const aleatorio = brawlersvalidos[
+            Math.floor(Math.random() * brawlersvalidos.length)
+        ];
+
+        console.log("BRAWLER SECRETO:");
+        console.log(aleatorio);
+
+        setbrawlerSecreto(aleatorio);
+    }, [brawlers]);
 
     useEffect(() => {
         if (!brawlerSecreto || tentativas.length === 0) return;
@@ -76,16 +123,25 @@ function Classic() {
     }, [sugestoes]);
 
     function confirmar() {
-        const chute = brawlers.find(
-            brawler => brawler.nome.toLowerCase() === input.toLowerCase()
-        );
+    const chute = brawlers.find(
+        brawler => brawler.nome.toLowerCase() === input.toLowerCase()
+    );
 
-
-        if (!chute) return alert("Brawler não encontrado. Verifique a grafia e tente novamente.");
-
-        settentativas([...tentativas, chute]);
-        setInput("");
+    if (!chute) {
+        return alert("Brawler não encontrado. Verifique a grafia e tente novamente.");
     }
+
+    console.log("================================");
+    console.log("CHUTE:", chute);
+    console.log("SECRETO:", brawlerSecreto);
+    console.log("RARIDADES:", chute.raridade, "|", brawlerSecreto.raridade);
+    console.log("CLASSES:", chute.classe, "|", brawlerSecreto.classe);
+    console.log("================================");
+
+    settentativas([...tentativas, chute]);
+    setInput("");
+    setSugestoes([]);
+}
 
     function comparar(valorChute, valorSecreto) {
         if (valorChute === valorSecreto){
@@ -104,10 +160,15 @@ function Classic() {
     }
 
     function toTitleCase(texto) {
-        return texto
+        if (texto === undefined || texto === null) {
+            console.warn("toTitleCase recebeu:", texto);
+            return "";
+        }
+
+        return String(texto)
             .toLowerCase()
             .split(" ")
-            .map(palavra => 
+            .map(palavra =>
                 palavra.charAt(0).toUpperCase() + palavra.slice(1)
             )
             .join(" ");
@@ -130,6 +191,22 @@ function Classic() {
         window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
+    if (carregando) {
+        return (
+            <div className={`page-container ${style.container}`}>
+                <p>Carregando brawlers...</p>
+            </div>
+        );
+    }
+
+    if (erroCarregamento) {
+        return (
+            <div className={`page-container ${style.container}`}>
+                <p>Não foi possível carregar os brawlers: {erroCarregamento}</p>
+                <p>Verifique se a API está rodando em {import.meta.env.VITE_API_URL || 'http://localhost:3333'}.</p>
+            </div>
+        );
+    }
 
     return (
         <div className={`page-container ${style.container}`}>
@@ -198,14 +275,6 @@ function Classic() {
                         <div className={style.linha}></div>
                     </div>
                     <div className={style.htrue}>
-                        <div className={style.textblock}>Lancamento</div>
-                        <div className={style.linha}></div>
-                    </div>
-                    <div className={style.htrue}>
-                        <div className={style.textblock}>Velocidade</div>
-                        <div className={style.linha}></div>
-                    </div>
-                    <div className={style.htrue}>
                         <div className={style.textblock}>Nome</div>
                         <div className={style.linha}></div>
                     </div>
@@ -245,29 +314,6 @@ function Classic() {
                         {toTitleCase(b.alcance)}
                     </div>
 
-                    <div className={`${style.block} delay4 ${
-                        comparar(b.anoLancamento, brawlerSecreto.anoLancamento) === "verde"
-                            ? "verde"
-                            : "vermelhoescuro"
-                    }`}>
-                        {comparar(b.anoLancamento, brawlerSecreto.anoLancamento) !== "verde" && (
-                            <i className={`material-icons ${style.arrow}`}>
-                                {comparar(b.anoLancamento, brawlerSecreto.anoLancamento) === "vermelho-Cima"
-                                    ? "arrow_downward"
-                                    : "arrow_upward"}
-                            </i>
-                        )}
-
-                        <span className={style.textValue}>
-                            {b.anoLancamento}
-                        </span>
-                    </div>
-
-
-                    <div className={`${style.block} delay5 ${comparar(b.velocidadeMovimento, brawlerSecreto.velocidadeMovimento)}`}>
-                        {toTitleCase(b.velocidadeMovimento)}
-                    </div>
-                    
                     <div className={`${style.block} delay6 ${comparar(b.nome, brawlerSecreto.nome)}`}>
                         {toTitleCase(b.nome)}
                     </div>
