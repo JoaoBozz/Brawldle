@@ -1,16 +1,18 @@
 import { useEffect, useState, useRef } from 'react';
 import confetti from "canvas-confetti";
 import style from './classic.module.css';
-import { getBrawlers } from '../services/api';
+import { getBrawlers, getCategorias, getRaridades } from '../services/api';
 
 // Converte o objeto que vem da API para o formato que o componente usa.
+// Recebe os mapas id -> nome de categorias e raridades para traduzir
+// category_id / rarity_id em texto legível.
 // OBS: a API atual não tem "anoLancamento" nem "velocidadeMovimento" —
 // essas colunas foram removidas do jogo até existirem no banco/API.
-function adaptarBrawler(b) {
+function adaptarBrawler(b, mapaCategorias, mapaRaridades) {
     return {
         nome: b.name,
-        raridade: b.rarity_name,
-        classe: b.category_name,
+        raridade: mapaRaridades[b.rarity_id] || 'Desconhecida',
+        classe: mapaCategorias[b.category_id] || 'Desconhecida',
         vida: b.health,
         alcance: b.attack_range,
     };
@@ -32,13 +34,29 @@ function Classic() {
 
     const [textoVitoria, setTextoVitoria] = useState("");
 
-    // Busca os brawlers da API assim que o componente monta
+    // Busca brawlers, categorias e raridades da API assim que o componente monta
     useEffect(() => {
-        getBrawlers()
-            .then((data) => {
-                console.log("API:", data);
+        Promise.all([getBrawlers(), getCategorias(), getRaridades()])
+            .then(([brawlersData, categoriasData, raridadesData]) => {
+                // Monta o dicionário id -> nome para categorias
+                const mapaCategorias = {};
+                categoriasData.forEach((c) => {
+                    mapaCategorias[c.id] = c.name;
+                });
 
-                const adaptados = data.map(adaptarBrawler);
+                // Monta o dicionário id -> nome para raridades
+                const mapaRaridades = {};
+                raridadesData.forEach((r) => {
+                    mapaRaridades[r.id] = r.name;
+                });
+
+                console.log("Brawlers (API):", brawlersData);
+                console.log("Mapa categorias:", mapaCategorias);
+                console.log("Mapa raridades:", mapaRaridades);
+
+                const adaptados = brawlersData.map((b) =>
+                    adaptarBrawler(b, mapaCategorias, mapaRaridades)
+                );
 
                 console.log("Adaptados:", adaptados);
 
